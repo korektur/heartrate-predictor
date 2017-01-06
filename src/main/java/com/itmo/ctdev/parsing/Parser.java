@@ -2,6 +2,7 @@ package com.itmo.ctdev.parsing;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author korektur
@@ -46,12 +47,17 @@ public class Parser {
         }
         if (tail.startsWith("\"[ ")) {
             String[] split = tail.substring(3).split(" ]\"(,)?", 2);
-            if (split.length == 2) {
+            if (split.length != 2) {
+                throw new IllegalStateException("Unexpected token");
+            }
+            if (split[1].length() != 0) {
                 tail = split[1];
             } else {
                 tail = null;
             }
-            return Arrays.asList(split[0].split(","));
+            return Arrays.stream(split[0].split(","))
+                    .filter(s -> s.length() > 0)
+                    .collect(Collectors.toList());
         }
         throw new IllegalStateException("Wrong token");
     }
