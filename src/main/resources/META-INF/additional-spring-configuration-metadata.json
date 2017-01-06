@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "data.workouts.file.name",
+      "type": "java.lang.String",
+      "description": "Path to workouts data file."
+    }
+  ]
+}

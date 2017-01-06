@@ -1,14 +1,51 @@
-group 'com.itmo.ctdev'
-version '1.0-SNAPSHOT'
+buildscript {
+    ext {
+        findbugsVersion = '3.0.1'
+        springBootVersion = '1.4.2.RELEASE'
+        guavaVersion = '20.0'
+        jacksonVersion = '2.8.5'
+        springVersion = '4.3.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
 
 apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+apply plugin: 'idea'
 
-sourceCompatibility = 1.5
+springBoot {
+    executable = true
+}
+
+jar {
+    baseName = 'gs-accessing-data-mongodb'
+    version =  '0.1.0'
+}
 
 repositories {
     mavenCentral()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
+    compile("com.google.code.findbugs:jsr305:${findbugsVersion}")
+    compile("com.google.guava:guava:${guavaVersion}")
+    compile("org.springframework:spring-context:${springVersion}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+    compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 }
+
+compileJava.dependsOn(processResources)
