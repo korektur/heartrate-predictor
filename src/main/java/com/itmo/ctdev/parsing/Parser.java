@@ -41,11 +41,16 @@ public class Parser {
         if (tail == null) {
             throw new IllegalStateException("Line end already reached");
         }
+        if (tail.length() == 0) {
+            tail = null;
+            return Collections.emptyList();
+        }
         if (tail.startsWith(",")) {
             tail = tail.substring(1);
             return Collections.emptyList();
         }
         if (tail.startsWith("\"[ ")) {
+            boolean isLineEnd = !tail.endsWith(",");
             String[] split = tail.substring(3).split(" ]\"(,)?", 2);
             if (split.length != 2) {
                 throw new IllegalStateException("Unexpected token");
@@ -53,7 +58,7 @@ public class Parser {
             if (split[1].length() != 0) {
                 tail = split[1];
             } else {
-                tail = null;
+                tail = isLineEnd ? null : "";
             }
             return Arrays.stream(split[0].split(","))
                     .filter(s -> s.length() > 0)

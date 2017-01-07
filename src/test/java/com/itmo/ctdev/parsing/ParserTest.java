@@ -66,9 +66,15 @@ public class ParserTest {
 
     @Test
     public void testGetNextArrayTokenEmpty() {
-        String line = "\"[  ]\"";
+        String line = "\"[  ]\",\"[  ]\",,";
         Parser parser = new Parser(line);
         List<String> nextArrayToken = parser.getNextArrayToken();
+        assertEquals(0, nextArrayToken.size());
+        nextArrayToken = parser.getNextArrayToken();
+        assertEquals(0, nextArrayToken.size());
+        nextArrayToken = parser.getNextArrayToken();
+        assertEquals(0, nextArrayToken.size());
+        nextArrayToken = parser.getNextArrayToken();
         assertEquals(0, nextArrayToken.size());
     }
 }
